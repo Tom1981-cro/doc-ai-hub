@@ -14,7 +14,7 @@ description: Sync documentation and screenshots to any knowledge base provider (
 
 Sync screenshots and documentation to any knowledge base provider.
 
-**Supported Providers:** Pylon, Zendesk, Confluence, Notion, and more.
+**Supported Providers:** Pylon and Zendesk. (Confluence, Notion, etc. appear as commented-out placeholders in the provider registry and are **not yet implemented** — selecting them yields `Unknown provider`.)
 
 ## Purpose
 
@@ -212,16 +212,15 @@ Use the generic KB sync script:
 cd /path/to/max-doc-ai
 
 # Uses provider from config.yaml
-python3 scripts/kb/sync.py \
+python3 scripts/kb/sync.py sync \
   --file output/features/YYYY-MM-DD_[feature-slug]/[feature-slug].md \
   --key [category]-[feature-slug] \
   --title "[Feature Name]" \
   --slug "[feature-slug]" \
   --collection [category]
 
-# Or specify provider explicitly
-python3 scripts/kb/sync.py \
-  --provider zendesk \
+# Or specify provider explicitly (global --provider goes BEFORE the sync subcommand)
+python3 scripts/kb/sync.py --provider zendesk sync \
   --file output/features/YYYY-MM-DD_[feature-slug]/[feature-slug].md \
   --key [category]-[feature-slug] \
   --title "[Feature Name]" \
@@ -231,7 +230,7 @@ python3 scripts/kb/sync.py \
 
 **Example:**
 ```bash
-python3 scripts/kb/sync.py \
+python3 scripts/kb/sync.py sync \
   --file output/features/2025-12-22_dashboards/dashboards.md \
   --key features-dashboards \
   --title "Dashboards" \

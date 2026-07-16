@@ -162,20 +162,17 @@ If repository is not accessible, use a regular text message to ask:
 
 ```
 This repository requires authentication. How should I access it?
-- Type "gh" to use GitHub CLI (if already authenticated)
-- Type "ssh" to use SSH key
-- Or paste your GitHub Personal Access Token (starts with ghp_ or github_pat_)
+- Type "gh" to use GitHub CLI (recommended — run `gh auth login` first if needed)
+- Type "ssh" to use an SSH key
+Please don't paste a token — use gh or ssh so no long-lived credential is stored
+in the conversation or the clone URL.
 ```
 
 **Processing the answer:**
 ```python
 response = user_response.strip()
 
-if response.startswith("ghp_") or response.startswith("github_pat_"):
-    # User pasted a GitHub PAT
-    AUTH_METHOD = "Personal Access Token"
-    GITHUB_PAT = response
-elif response.lower() in ["gh", "github cli", "github-cli"]:
+if response.lower() in ["gh", "github cli", "github-cli"]:
     AUTH_METHOD = "GitHub CLI"
 elif response.lower() in ["ssh", "ssh key"]:
     AUTH_METHOD = "SSH"
@@ -279,10 +276,6 @@ if [[ "$AUTH_METHOD" == "GitHub CLI" ]]; then
   gh repo clone "$GITHUB_REPO_URL" "$WORKING_DIR"
 elif [[ "$AUTH_METHOD" == "SSH" ]]; then
   git clone "$GITHUB_REPO_URL" "$WORKING_DIR"
-elif [[ "$AUTH_METHOD" == "Personal Access Token" ]]; then
-  # Extract user/repo from URL
-  REPO_PATH=$(echo "$GITHUB_REPO_URL" | sed 's|https://github.com/||' | sed 's|\.git||')
-  git clone "https://${GITHUB_PAT}@github.com/${REPO_PATH}.git" "$WORKING_DIR"
 else
   # No auth needed (public repo or already authenticated)
   git clone "$GITHUB_REPO_URL" "$WORKING_DIR"
@@ -317,9 +310,9 @@ import re
 from datetime import datetime
 
 # Get feature name
-if FEATURE_INPUT_TYPE == "Feature name only":
+if FEATURE_INPUT_TYPE == "Name":
     feature_name = FEATURE_NAME
-elif FEATURE_INPUT_TYPE == "Short description":
+elif FEATURE_INPUT_TYPE == "Description":
     # Extract first few words from description
     feature_name = FEATURE_DESCRIPTION.split()[0:3]
     feature_name = " ".join(feature_name)
