@@ -1,0 +1,181 @@
+# max-doc-AI Configuration File
+# Copy this file to config.yaml and fill in your values
+
+# Product Information
+product:
+  name: "FlowState"
+  url: "https://app.flowstate.example.com"
+  documentation_url: "https://docs.flowstate.example.com"
+
+# Knowledge Base Configuration (Generic)
+# Supports multiple providers: Pylon, Zendesk, Confluence, Notion, etc.
+knowledge_base:
+  # Active provider (pylon, zendesk, confluence, notion, intercom, gitbook)
+  provider: "pylon"
+
+  # Provider-specific configurations
+  providers:
+    # Pylon Configuration
+    pylon:
+      # Get your API key from https://app.usepylon.com/settings/api-keys
+      api_key: "${PYLON_API_KEY}"
+
+      # Your Pylon Knowledge Base ID (found in KB settings)
+      kb_id: "${PYLON_KB_ID}"
+
+      # Your Pylon user ID (for article attribution)
+      author_user_id: "${PYLON_AUTHOR_ID}"
+
+      # Pylon API base URL (shouldn't need to change this)
+      api_base: "https://api.usepylon.com"
+
+      # Collection IDs mapping (create collections in Pylon first, then add IDs here)
+      collections:
+        getting-started: "${COLLECTION_GETTING_STARTED_ID}"
+        features: "${COLLECTION_FEATURES_ID}"
+        integrations: "${COLLECTION_INTEGRATIONS_ID}"
+
+    # Zendesk Configuration (Example)
+    zendesk:
+      # Your Zendesk subdomain (e.g., 'mycompany' for mycompany.zendesk.com)
+      subdomain: "${ZENDESK_SUBDOMAIN}"
+
+      # Admin email
+      email: "${ZENDESK_EMAIL}"
+
+      # API token (generate from Zendesk admin)
+      api_token: "${ZENDESK_API_TOKEN}"
+
+      # Default locale (e.g., 'en-us', 'fr', 'de')
+      locale: "en-us"
+
+      # Optional: Brand ID if using multiple brands
+      brand_id: "${ZENDESK_BRAND_ID}"
+
+      # Section IDs mapping (categories in Zendesk)
+      categories:
+        getting-started: "${ZENDESK_SECTION_GETTING_STARTED_ID}"
+        features: "${ZENDESK_SECTION_FEATURES_ID}"
+        integrations: "${ZENDESK_SECTION_INTEGRATIONS_ID}"
+
+    # Confluence Configuration (Example - not yet implemented)
+    # confluence:
+    #   base_url: "https://your-domain.atlassian.net"
+    #   email: "${CONFLUENCE_EMAIL}"
+    #   api_token: "${CONFLUENCE_API_TOKEN}"
+    #   space_key: "DOCS"
+    #   parent_page_id: "${CONFLUENCE_PARENT_PAGE_ID}"
+
+    # Notion Configuration (Example - not yet implemented)
+    # notion:
+    #   api_key: "${NOTION_API_KEY}"
+    #   database_id: "${NOTION_DATABASE_ID}"
+
+# ============================================================================
+# BACKWARDS COMPATIBILITY: Old pylon configuration (deprecated)
+# ============================================================================
+# For backwards compatibility, you can still use the old format:
+pylon:
+  api_key: "${PYLON_API_KEY}"
+  kb_id: "${PYLON_KB_ID}"
+  author_user_id: "${PYLON_AUTHOR_ID}"
+  api_base: "https://api.usepylon.com"
+  collections:
+    getting-started: "${COLLECTION_GETTING_STARTED_ID}"
+    features: "${COLLECTION_FEATURES_ID}"
+    integrations: "${COLLECTION_INTEGRATIONS_ID}"
+# However, it's recommended to migrate to the new knowledge_base structure above
+# ============================================================================
+
+# Output Configuration
+# ALL output files go to ./output/ - this is the single source of truth
+output:
+  # Base output directory for all generated content
+  base_dir: "./output"
+
+  # Use dated folders (YYYY-MM-DD format) for organization
+  use_dated_folders: true
+
+  # Folder structure templates
+  features_dir: "features/{date}_{feature_slug}"
+  changelogs_dir: "changelogs/{date}"
+  screenshots_dir: "screenshots"
+
+# Screenshot Configuration
+screenshots:
+  # Display viewport size (recommend ≤ 1280x800 for best coordinate accuracy)
+  viewport_width: 1280
+  viewport_height: 800
+
+  # Screenshot format
+  format: "png"
+  quality: 90
+
+  # Claude model to use
+  # Options: "claude-sonnet-4-5" (recommended - best cost/quality balance)
+  #          "claude-opus-4-5" (higher quality, 5x more expensive)
+  model: "claude-sonnet-4-5"
+
+  # Anthropic API key (store in .env as ANTHROPIC_API_KEY)
+  api_key: "${ANTHROPIC_API_KEY}"
+
+  # Agent loop settings
+  max_iterations: 50  # Maximum agent loop iterations per task
+  timeout_seconds: 300  # Overall timeout per capture session
+
+  # Authentication Configuration
+  auth:
+    # Enable visual authentication via Computer Use
+    # No more session expiration issues!
+    enabled: true
+
+    # Authentication type
+    # Options: "sso" or "username_password"
+    type: "sso"
+
+    # Login URL
+    login_url: "${PRODUCT_URL}/login"
+
+    # Credentials (store in .env for security)
+    username: "${SCREENSHOT_USER}"
+    password: "${SCREENSHOT_PASS}"
+
+    # SSO provider (only if type: sso)
+    # Options: "google", "okta", "azure", "auth0", etc.
+    sso_provider: "google"
+
+    # Multi-factor authentication (optional)
+    mfa:
+      enabled: false
+      type: "totp"  # Options: "totp", "sms", "manual"
+      totp_secret: "${TOTP_SECRET}"  # Base32 TOTP secret (if type: totp)
+
+  # Verification settings
+  verify_auth_success: true  # Ask Claude to verify authentication worked
+  verify_page_load: true  # Ask Claude to verify pages loaded correctly
+
+# Documentation Configuration
+documentation:
+  # Documentation categories (must match Pylon collections)
+  categories:
+    - getting-started
+    - features
+    - integrations
+
+  # Whether to include console URLs in documentation
+  include_console_urls: true
+
+# Announcement Configuration
+announcements:
+  # Announcement channels (slack, email, or both)
+  channels:
+    - slack
+    - email
+
+  # Whether to generate batch changelog for multiple features
+  batch_mode_enabled: true
+
+# State Tracking
+state:
+  # File to track Pylon sync state
+  sync_state_file: "./output/sync-state.json"

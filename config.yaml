@@ -1,0 +1,78 @@
+# doc-ai-hub configuration — Nasc + Pylon
+# Secrets live in .env (gitignored); this file only references ${ENV_VARS}.
+
+product:
+  name: "Nasc"
+  url: "${PRODUCT_URL}"                 # set in .env (e.g. https://app.9-5chat.com)
+  documentation_url: "${PRODUCT_DOCS_URL}"
+
+knowledge_base:
+  provider: "pylon"
+  providers:
+    pylon:
+      api_key: "${PYLON_API_KEY}"
+      kb_id: "${PYLON_KB_ID}"
+      author_user_id: "${PYLON_AUTHOR_ID}"
+      api_base: "https://api.usepylon.com"
+      collections:
+        getting-started: "${COLLECTION_GETTING_STARTED_ID}"
+        features: "${COLLECTION_FEATURES_ID}"
+        integrations: "${COLLECTION_INTEGRATIONS_ID}"
+    # Zendesk kept for future switch — unused while provider is pylon.
+    zendesk:
+      subdomain: "${ZENDESK_SUBDOMAIN}"
+      email: "${ZENDESK_EMAIL}"
+      api_token: "${ZENDESK_API_TOKEN}"
+      locale: "en-us"
+      categories:
+        getting-started: "${ZENDESK_SECTION_GETTING_STARTED_ID}"
+        features: "${ZENDESK_SECTION_FEATURES_ID}"
+        integrations: "${ZENDESK_SECTION_INTEGRATIONS_ID}"
+
+output:
+  base_dir: "./output"
+  use_dated_folders: true
+  features_dir: "features/{date}_{feature_slug}"
+  changelogs_dir: "changelogs/{date}"
+  screenshots_dir: "screenshots"
+
+screenshots:
+  viewport_width: 1280
+  viewport_height: 800
+  format: "png"
+  quality: 90
+  model: "claude-sonnet-4-5"
+  api_key: "${ANTHROPIC_API_KEY}"
+  max_iterations: 50
+  timeout_seconds: 300
+  auth:
+    enabled: true
+    # Nasc supports email/password + Google/Apple SSO. Default to email+password
+    # for screenshot auth; switch type to "sso" + set sso_provider if preferred.
+    type: "username_password"
+    login_url: "${PRODUCT_URL}/login"
+    username: "${SCREENSHOT_USER}"
+    password: "${SCREENSHOT_PASS}"
+    sso_provider: "google"
+    mfa:
+      enabled: false
+      type: "totp"
+      totp_secret: "${TOTP_SECRET}"
+  verify_auth_success: true
+  verify_page_load: true
+
+documentation:
+  categories:
+    - getting-started
+    - features
+    - integrations
+  include_console_urls: true
+
+announcements:
+  channels:
+    - slack
+    - email
+  batch_mode_enabled: true
+
+state:
+  sync_state_file: "./output/sync-state.json"
