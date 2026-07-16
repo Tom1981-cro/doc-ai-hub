@@ -42,3 +42,30 @@ external target. (Keep credentials for that product in `.env`.)
 - ⛳ Pending: real Pylon credentials + Anthropic API key in `.env`, and confirming
   the Nasc app/docs URLs. Until then, code-research + doc-generation steps run;
   screenshot-capture + KB-sync need the live credentials.
+
+---
+
+## Use it across all your repos — Claude Code plugins
+
+This repo is also a **Claude Code plugin marketplace** (`.claude-plugin/marketplace.json`)
+exposing two plugins:
+
+- **`docs-tracking`** — `/setup-docs-tracking` bootstraps the self-maintaining docs
+  system (ROUTE_REFERENCE + SYSTEM_DOCS + `/hey-claude` + `/sync-route-reference`) in
+  whatever repo you run it in. Self-contained — works anywhere after install.
+- **`doc-generation`** — the 5 product-doc/release skills. `update-product-doc` and
+  `create-changelog` run in any repo with no setup; `capture-screenshots`, `sync-docs`
+  and `create-release` run this repo's Python toolchain — set `DOC_AI_HUB` to your
+  checkout of this repo and `pip install -r "$DOC_AI_HUB/requirements.txt"` once.
+
+### Install once (available in every repo)
+
+```
+/plugin marketplace add Tom1981-cro/doc-ai-hub
+/plugin install docs-tracking@doc-ai-hub      # choose "User" scope → all repos
+/plugin install doc-generation@doc-ai-hub     # choose "User" scope → all repos
+```
+
+Skills are then namespaced: `/docs-tracking:setup-docs-tracking`,
+`/doc-generation:update-product-doc`, etc. Run `/setup-docs-tracking` once inside
+each repo you want the docs-tracking system in.

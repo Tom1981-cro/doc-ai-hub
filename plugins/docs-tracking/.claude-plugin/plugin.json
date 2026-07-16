@@ -1,0 +1,7 @@
+{
+  "name": "docs-tracking",
+  "description": "Bootstrap a self-maintaining docs-tracking system in any repo: a source-derived ROUTE_REFERENCE map + canonical SYSTEM_DOCS + a read-before/update-after loop that keeps the coding agent editing the right file and querying the right table/collection.",
+  "version": "1.0.0",
+  "author": { "name": "Tom1981-cro" },
+  "license": "GPL-3.0"
+}

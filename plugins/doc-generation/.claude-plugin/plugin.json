@@ -1,0 +1,7 @@
+{
+  "name": "doc-generation",
+  "description": "Generate customer-facing product docs, screenshots, KB sync, and Slack/email release announcements from your codebase. The doc-writing skills (update-product-doc, create-changelog) run in any repo with no setup; the screenshot + KB-sync + release steps run the doc-ai-hub Python toolchain (set DOC_AI_HUB to your hub checkout).",
+  "version": "1.0.0",
+  "author": { "name": "Tom1981-cro" },
+  "license": "GPL-3.0"
+}
