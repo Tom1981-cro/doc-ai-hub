@@ -3,6 +3,13 @@ name: sync-docs
 description: Sync documentation and screenshots to any knowledge base provider (Pylon, Zendesk, Confluence, etc.). Handles two modes: (1) Upload screenshots to KB CDN and return URLs, (2) Sync markdown documentation to KB with proper collection assignment. Provider-agnostic with automatic provider detection from config.
 ---
 
+> **Plugin note — Python-backed steps.** This skill shells out to the doc-ai-hub
+> toolchain. Set `DOC_AI_HUB` to your hub checkout (where `config.yaml` + `.env`
+> live) and invoke scripts as `python3 "$DOC_AI_HUB/scripts/..."`. Run
+> `pip install -r "$DOC_AI_HUB/requirements.txt"` once. Any bare `scripts/...` or
+> `config.yaml` / `output/` path below is relative to `$DOC_AI_HUB`.
+
+
 # Sync Documentation to Knowledge Base
 
 Sync screenshots and documentation to any knowledge base provider.

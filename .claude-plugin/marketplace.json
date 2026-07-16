@@ -1,0 +1,21 @@
+{
+  "name": "doc-ai-hub",
+  "owner": { "name": "Tom1981-cro" },
+  "metadata": {
+    "description": "Documentation tooling: a docs-tracking bootstrapper for any repo, and product-doc / changelog / release generation."
+  },
+  "plugins": [
+    {
+      "name": "docs-tracking",
+      "source": "./plugins/docs-tracking",
+      "description": "Bootstrap a self-maintaining docs-tracking system (ROUTE_REFERENCE + SYSTEM_DOCS + read-before/update-after loop) in any repo. Self-contained.",
+      "tags": ["documentation", "codebase", "context"]
+    },
+    {
+      "name": "doc-generation",
+      "source": "./plugins/doc-generation",
+      "description": "Generate customer-facing product docs, screenshots, KB sync (Pylon/Zendesk) and Slack/email release announcements. Doc-writing skills run anywhere; screenshot/sync/release steps use the hub's Python toolchain via $DOC_AI_HUB.",
+      "tags": ["documentation", "release", "changelog", "screenshots"]
+    }
+  ]
+}

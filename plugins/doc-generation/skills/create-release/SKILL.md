@@ -3,6 +3,13 @@ name: create-release
 description: Orchestrate complete product release workflow for FINISHED, PRODUCTION-READY features. Executes comprehensive release preparation including screenshot capture, documentation creation/updates, knowledge base sync, and customer announcement generation. ONLY invoke when user explicitly requests a "release", "launch", "announcement", or "release materials" for a completed feature ready for customer communication. Do NOT use for bug fixes, incomplete features, documentation-only updates, or internal changes. This is a high-stakes workflow that runs start-to-finish without stopping.
 ---
 
+> **Plugin note — Python-backed steps.** This skill shells out to the doc-ai-hub
+> toolchain. Set `DOC_AI_HUB` to your hub checkout (where `config.yaml` + `.env`
+> live) and invoke scripts as `python3 "$DOC_AI_HUB/scripts/..."`. Run
+> `pip install -r "$DOC_AI_HUB/requirements.txt"` once. Any bare `scripts/...` or
+> `config.yaml` / `output/` path below is relative to `$DOC_AI_HUB`.
+
+
 # Create Release
 
 You are preparing a complete release for a new product feature. This includes creating customer announcements and updating product documentation.
